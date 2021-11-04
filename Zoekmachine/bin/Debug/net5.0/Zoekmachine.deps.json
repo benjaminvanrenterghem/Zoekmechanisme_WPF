@@ -1,0 +1,159 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v5.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v5.0": {
+      "Zoekmachine/1.0.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.1",
+          "PresentationCore": "4.0.0.0"
+        },
+        "runtime": {
+          "Zoekmachine.dll": {}
+        }
+      },
+      "Newtonsoft.Json/13.0.1": {
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "13.0.0.0",
+            "fileVersion": "13.0.1.25517"
+          }
+        }
+      },
+      "PresentationCore/4.0.0.0": {
+        "runtime": {
+          "PresentationCore.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.7.3062.0"
+          }
+        }
+      },
+      "System.Xaml/4.0.0.0": {
+        "runtime": {
+          "System.Xaml.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.7.3062.0"
+          }
+        }
+      },
+      "UIAutomationTypes/4.0.0.0": {
+        "runtime": {
+          "UIAutomationTypes.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.7.3062.0"
+          }
+        }
+      },
+      "System.Windows.Input.Manipulations/4.0.0.0": {
+        "runtime": {
+          "System.Windows.Input.Manipulations.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.7.3062.0"
+          }
+        }
+      },
+      "UIAutomationProvider/4.0.0.0": {
+        "runtime": {
+          "UIAutomationProvider.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.7.3062.0"
+          }
+        }
+      },
+      "System.Deployment/4.0.0.0": {
+        "runtime": {
+          "System.Deployment.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.7.3062.0"
+          }
+        }
+      },
+      "Accessibility/4.0.0.0": {
+        "runtime": {
+          "Accessibility.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.7.3062.0"
+          }
+        }
+      },
+      "System.Windows.Forms/4.0.0.0": {
+        "runtime": {
+          "System.Windows.Forms.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.7.3062.0"
+          }
+        }
+      },
+      "System.Runtime.Serialization.Formatters.Soap/4.0.0.0": {
+        "runtime": {
+          "System.Runtime.Serialization.Formatters.Soap.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.7.3062.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Zoekmachine/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Newtonsoft.Json/13.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ppPFpBcvxdsfUonNcvITKqLl3bqxWbDCZIzDWHzjpdAHRFfZe0Dw9HmA0+za13IdyrgJwpkDTDA9fHaxOrt20A==",
+      "path": "newtonsoft.json/13.0.1",
+      "hashPath": "newtonsoft.json.13.0.1.nupkg.sha512"
+    },
+    "PresentationCore/4.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "System.Xaml/4.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "UIAutomationTypes/4.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "System.Windows.Input.Manipulations/4.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "UIAutomationProvider/4.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "System.Deployment/4.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Accessibility/4.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "System.Windows.Forms/4.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "System.Runtime.Serialization.Formatters.Soap/4.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
