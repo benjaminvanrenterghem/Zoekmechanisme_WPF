@@ -192,8 +192,8 @@ namespace Zoekmachine.v2 {
                 bool res = false;
 
                 foreach (string s in ls) {
-                    if (res) { break; } res = blacklistVelden.Any(l => s.Contains(l));
-                    if (res) { break; } res = ls.Any(l => s.Contains(l) && s != l);
+                    if (res) { continue; } res = blacklistVelden.Any(l => s.Contains(l));
+                    if (res) { continue; } res = ls.Any(l => s.Contains(l) && s != l);
                 }
 
                 if (!res) {
