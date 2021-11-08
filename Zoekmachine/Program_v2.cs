@@ -100,14 +100,14 @@ namespace Zoekmachine.v2 {
 
                 string[] zoekfilterArgs = zoekfilter.Split(_diepteSeparator);
 
-				Type huidigType = gekozenType;
-				foreach (string naam in zoekfilterArgs) {
+		        Type huidigType = gekozenType;
+		        foreach (string naam in zoekfilterArgs) {
                     Type nieuwType = null;
                     foreach (var prop in huidigType.GetProperties()) {
                         if (prop.Name == naam) {
                             pad.Add(huidigType);
-							nieuwType = prop.PropertyType;
-							break;
+					        nieuwType = prop.PropertyType;
+					        break;
                         }
                     }
                     if (nieuwType is null) { throw new ArgumentException("Er kon geen type bepaald worden met property naam: " + naam); }
@@ -121,17 +121,13 @@ namespace Zoekmachine.v2 {
             }
         }
 
-        private object _geefWaardeVanPropertyRecursief(List<Type> types, string propertyNaam, object instantie /*, int maxNiveau = 2, int huidigNiveau = 1*/) {
+        private object _geefWaardeVanPropertyRecursief(List<Type> types, string propertyNaam, object instantie) {
             List<Type> huidigeTypes = types.ToList();
-            //private object _geefWaardeVanPropertyRecursief(Type targetType, string propertyNaam, object instantie, int maxNiveau=2, int huidigNiveau=1) {
-            //if(huidigNiveau < 1 || maxNiveau < 1) { throw new ArgumentException("Huidig niveau en max niveau zijn minimum 1. (1,1 = geen recursie)"); }
 
             var instantieType = instantie.GetType();
 
             foreach (var property in instantieType.GetProperties()) {
 
-                // if ((targetType == property.PropertyType || targetType == instantie.GetType())
-                // && targetType is not null)
                 var waarde = property.GetValue(instantie, null);
 
                 if (property.Name == propertyNaam && huidigeTypes.Count <= 1) {
@@ -140,15 +136,11 @@ namespace Zoekmachine.v2 {
 
                     if (huidigeTypes[huidigeTypes.Count > 1 ? 1 : 0] == property.PropertyType) {
                         if (property.PropertyType.FullName != "System.String"
-                            && !property.PropertyType.IsPrimitive
-                            /*&& huidigNiveau < maxNiveau*/) {
-
-                            //int nieuwNiveau = huidigNiveau + 1;
-                            List<Type> recursieveTypes = types.ToList();
-                            recursieveTypes.Remove(recursieveTypes.First());
-                            var recursieveOperatie = _geefWaardeVanPropertyRecursief(recursieveTypes, propertyNaam, waarde);
-                            if (recursieveOperatie is not null) { return recursieveOperatie; }
-
+                            && !property.PropertyType.IsPrimitive) {
+                                List<Type> recursieveTypes = types.ToList();
+                                recursieveTypes.Remove(recursieveTypes.First());
+                                var recursieveOperatie = _geefWaardeVanPropertyRecursief(recursieveTypes, propertyNaam, waarde);
+                                if (recursieveOperatie is not null) { return recursieveOperatie; }
                         }
                     }
 
@@ -183,7 +175,7 @@ namespace Zoekmachine.v2 {
             return filterDataResultaat;
         }
 
-        public List<string> GeefZoekfilterVelden(Type huidigType, List<string> blacklistVelden=null, int maxNiveau=2, int huidigNiveau=1) {
+        public List<string> GeefZoekfilterVelden(Type huidigType, List<string> blacklistVelden=null, int maxNiveau=1, int huidigNiveau=1) {
             if (huidigNiveau < 1 || maxNiveau < 1){
                 throw new ArgumentException("Huidig niveau en max niveau zijn minimum 1."); }
 
@@ -285,7 +277,7 @@ namespace Zoekmachine.v2 {
             List<TestResponseDTO> res_deepnested = zoekmachine.ZoekMetFilter<TestResponseDTO>(dataCollectieActiesTestDTOs, "GenesteDTO >> DieperGenesteResponseDTO >> Naam", "Jan");
             Console.WriteLine("x = " + res_deepnested.Count);
             string steekproefResultaat_deepnested = JsonConvert.SerializeObject(
-                                            res_nested[rnd.Next(0, res_nested.Count)],
+                                            res_deepnested[rnd.Next(0, res_deepnested.Count)],
                                             Formatting.Indented,
                                             new JsonSerializerSettings() {
                                                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
