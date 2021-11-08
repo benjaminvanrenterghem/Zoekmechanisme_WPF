@@ -28,7 +28,7 @@ namespace Zoekmachine.v2 {
         private string _naam;
         private string _naamvoorspelbaar;
         private TestResponseDTO _testresponsedto;
-        private DieperGenesteResponseDTO _diepergenesteresponsedto;
+        private readonly DieperGenesteResponseDTO _diepergenesteresponsedto;
 
         public NestedResponseDTO(TestResponseDTO testresponsedto=null) {
             _naam = "NestedNaam" + rnd.Next(int.MinValue, int.MaxValue).ToString();
@@ -133,17 +133,19 @@ namespace Zoekmachine.v2 {
                 if (property.Name == propertyNaam && huidigeTypes.Count <= 1) {
                     return waarde;
                 } else {
-
-                    if (huidigeTypes[huidigeTypes.Count > 1 ? 1 : 0] == property.PropertyType) {
-                        if (property.PropertyType.FullName != "System.String"
-                            && !property.PropertyType.IsPrimitive) {
-                                List<Type> recursieveTypes = types.ToList();
-                                recursieveTypes.Remove(recursieveTypes.First());
-                                var recursieveOperatie = _geefWaardeVanPropertyRecursief(recursieveTypes, propertyNaam, waarde);
-                                if (recursieveOperatie is not null) { return recursieveOperatie; }
+                    if (huidigeTypes.Count > 0) {
+                        if (huidigeTypes[huidigeTypes.Count > 1 ? 1 : 0] == property.PropertyType) {
+                            if (property.PropertyType.FullName != "System.String"
+                                && !property.PropertyType.IsPrimitive) {
+                                    List<Type> recursieveTypes = types.ToList();
+                                    recursieveTypes.Remove(recursieveTypes.First());
+                                    var recursieveOperatie = _geefWaardeVanPropertyRecursief(recursieveTypes, propertyNaam, waarde);
+                                    if (recursieveOperatie is not null) { return recursieveOperatie; }
+                            }
                         }
-                    }
-
+                    } else {
+                        return null;
+					}
                 }
             }
 
