@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 namespace Zoekmachine.v2 {
     public class DieperGenesteResponseDTO {
         private Random rnd = new();
-        public string _naam;
+        private string _naam;
 
         public DieperGenesteResponseDTO() {
             _naam = rnd.Next(0, 100) <= 50 ? "Jan" : "Piet";
