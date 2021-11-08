@@ -1,30 +1,46 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Input;
 using Newtonsoft.Json;
 
 namespace Zoekmachine.v2 {
+    public class DieperGenesteResponseDTO {
+        private Random rnd = new();
+        public string _naam;
+
+        public DieperGenesteResponseDTO() {
+            _naam = rnd.Next(0, 100) <= 50 ? "Jan" : "Piet";
+        }
+
+        public string Naam => _naam;
+	}
+
     public class NestedResponseDTO {
         private Random rnd = new();
         private string _naam;
         private string _naamvoorspelbaar;
         private TestResponseDTO _testresponsedto;
+        private DieperGenesteResponseDTO _diepergenesteresponsedto;
 
         public NestedResponseDTO(TestResponseDTO testresponsedto=null) {
             _naam = "NestedNaam" + rnd.Next(int.MinValue, int.MaxValue).ToString();
             _naamvoorspelbaar = rnd.Next(0, 100) <= 50 ? "Vincent" : "John";
             _testresponsedto = testresponsedto;
+            _diepergenesteresponsedto = new DieperGenesteResponseDTO();
         }
 
         public string Naam => _naam;
         public string NaamVoorspelbaar => _naamvoorspelbaar;
         public TestResponseDTO CirculaireRelatieDTO => _testresponsedto;
+        public DieperGenesteResponseDTO DieperGenesteResponseDTO => _diepergenesteresponsedto;
     }
 
     public class TestResponseDTO {
@@ -77,55 +93,65 @@ namespace Zoekmachine.v2 {
             _diepteSeparator = diepteSeparator.StartsWith(" ") && diepteSeparator.EndsWith(" ") ? diepteSeparator : throw new ArgumentException("DiepteSeparator dient minstens 1 spatie aan voor en achterkant te bevatten");
         }
 
-        private KeyValuePair<Type, string> _parseZoekfilter(Type gekozenType, string zoekfilter) {
+        private KeyValuePair<List<Type>, string> _parseZoekfilter(Type gekozenType, string zoekfilter) {
+            List<Type> pad = new() { };
             if (zoekfilter.Contains(_diepteSeparator)) {
                 if (zoekfilter.EndsWith(_diepteSeparator) || zoekfilter.StartsWith(_diepteSeparator)) { throw new ArgumentException("Er ontbreekt een veld."); }
 
                 string[] zoekfilterArgs = zoekfilter.Split(_diepteSeparator);
 
-                Type vorigeType = gekozenType;
-                Type huidigType = gekozenType;
-                foreach (string naam in zoekfilterArgs) {
+				Type huidigType = gekozenType;
+				foreach (string naam in zoekfilterArgs) {
                     Type nieuwType = null;
                     foreach (var prop in huidigType.GetProperties()) {
                         if (prop.Name == naam) {
-                            vorigeType = huidigType;
-                            nieuwType = prop.PropertyType;
-                            break;
+                            pad.Add(huidigType);
+							nieuwType = prop.PropertyType;
+							break;
                         }
                     }
                     if (nieuwType is null) { throw new ArgumentException("Er kon geen type bepaald worden met property naam: " + naam); }
                     huidigType = nieuwType;
                 }
 
-                return new KeyValuePair<Type, string>(vorigeType, zoekfilterArgs[zoekfilterArgs.Length - 1]);
+                return new KeyValuePair<List<Type>, string>(pad, zoekfilterArgs[zoekfilterArgs.Length - 1]);
             } else {
-                return new KeyValuePair<Type, string>(gekozenType, zoekfilter.Trim());
+                pad.Add(gekozenType);
+                return new KeyValuePair<List<Type>, string>(pad, zoekfilter.Trim());
             }
         }
 
-        private object _geefWaardeVanPropertyRecursief(Type targetType, string propertyNaam, object instantie, int maxNiveau=2, int huidigNiveau=1) {
-            if(huidigNiveau < 1 || maxNiveau < 1) { throw new ArgumentException("Huidig niveau en max niveau zijn minimum 1. (1,1 = geen recursie)"); }
+        private object _geefWaardeVanPropertyRecursief(List<Type> types, string propertyNaam, object instantie /*, int maxNiveau = 2, int huidigNiveau = 1*/) {
+            List<Type> huidigeTypes = types.ToList();
+            //private object _geefWaardeVanPropertyRecursief(Type targetType, string propertyNaam, object instantie, int maxNiveau=2, int huidigNiveau=1) {
+            //if(huidigNiveau < 1 || maxNiveau < 1) { throw new ArgumentException("Huidig niveau en max niveau zijn minimum 1. (1,1 = geen recursie)"); }
 
             var instantieType = instantie.GetType();
 
             foreach (var property in instantieType.GetProperties()) {
 
-                if ((targetType == property.PropertyType || targetType == instantie.GetType()) 
-                    && targetType is not null) {
-                    var waarde = property.GetValue(instantie, null);
+                // if ((targetType == property.PropertyType || targetType == instantie.GetType())
+                // && targetType is not null)
+                var waarde = property.GetValue(instantie, null);
 
-                    if (property.PropertyType.FullName != "System.String"
-                        && !property.PropertyType.IsPrimitive
-                        && huidigNiveau < maxNiveau) {
+                if (property.Name == propertyNaam && huidigeTypes.Count <= 1) {
+                    return waarde;
+                } else {
 
-                        int nieuwNiveau = huidigNiveau + 1;
-                        var recursieveOperatie = _geefWaardeVanPropertyRecursief(targetType, propertyNaam, waarde, maxNiveau, nieuwNiveau);
-                        if (recursieveOperatie is not null) { return recursieveOperatie; }
+                    if (huidigeTypes[huidigeTypes.Count > 1 ? 1 : 0] == property.PropertyType) {
+                        if (property.PropertyType.FullName != "System.String"
+                            && !property.PropertyType.IsPrimitive
+                            /*&& huidigNiveau < maxNiveau*/) {
 
-                    } else if (property.Name == propertyNaam) {
-                        return waarde;
+                            //int nieuwNiveau = huidigNiveau + 1;
+                            List<Type> recursieveTypes = types.ToList();
+                            recursieveTypes.Remove(recursieveTypes.First());
+                            var recursieveOperatie = _geefWaardeVanPropertyRecursief(recursieveTypes, propertyNaam, waarde);
+                            if (recursieveOperatie is not null) { return recursieveOperatie; }
+
+                        }
                     }
+
                 }
             }
 
@@ -141,8 +167,9 @@ namespace Zoekmachine.v2 {
                 dataCollectieActie.Invoke()?.ForEach(x => dataCollectieResultaat.Add(x));
             }
 
-            KeyValuePair<Type, string> zoekfilterParseResultaat = _parseZoekfilter(typeof(T), zoekfilter);
+            KeyValuePair<List<Type>, string> zoekfilterParseResultaat = _parseZoekfilter(typeof(T), zoekfilter);
 
+            
             foreach (T b in dataCollectieResultaat) {
                 var res = _geefWaardeVanPropertyRecursief(zoekfilterParseResultaat.Key, zoekfilterParseResultaat.Value, b);
                 if (res is not null) {
@@ -156,7 +183,7 @@ namespace Zoekmachine.v2 {
             return filterDataResultaat;
         }
 
-        public List<string> GeefZoekfilterVelden(Type huidigType, List<string> blacklistVelden=null, int maxNiveau=1, int huidigNiveau=1) {
+        public List<string> GeefZoekfilterVelden(Type huidigType, List<string> blacklistVelden=null, int maxNiveau=2, int huidigNiveau=1) {
             if (huidigNiveau < 1 || maxNiveau < 1){
                 throw new ArgumentException("Huidig niveau en max niveau zijn minimum 1."); }
 
@@ -253,7 +280,19 @@ namespace Zoekmachine.v2 {
                                             ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
             Console.WriteLine("Steekproef resultaat:\n" + steekproefResultaat_nested);
 			Console.WriteLine(metricSeparator);
-		}
+
+            Console.WriteLine("Als dieper geneste property (niveau 2) --- 200 kop of munt operaties waarvan x met naam 'Jan':");
+            List<TestResponseDTO> res_deepnested = zoekmachine.ZoekMetFilter<TestResponseDTO>(dataCollectieActiesTestDTOs, "GenesteDTO >> DieperGenesteResponseDTO >> Naam", "Jan");
+            Console.WriteLine("x = " + res_deepnested.Count);
+            string steekproefResultaat_deepnested = JsonConvert.SerializeObject(
+                                            res_nested[rnd.Next(0, res_nested.Count)],
+                                            Formatting.Indented,
+                                            new JsonSerializerSettings() {
+                                                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                                            });
+            Console.WriteLine("Steekproef resultaat:\n" + steekproefResultaat_deepnested);
+            Console.WriteLine(metricSeparator);
+        }
     }
 }
 

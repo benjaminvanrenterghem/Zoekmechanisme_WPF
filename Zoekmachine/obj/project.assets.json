@@ -53,11 +53,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\server\\Documents\\GitHub\\Projectwerk\\sideprojects\\ZoekmachineProbeersel\\Zoekmachine\\Zoekmachine\\Zoekmachine.csproj",
+      "projectUniqueName": "D:\\GitHub\\Zoekmechanisme_WPF\\Zoekmachine\\Zoekmachine.csproj",
       "projectName": "Zoekmachine",
-      "projectPath": "C:\\Users\\server\\Documents\\GitHub\\Projectwerk\\sideprojects\\ZoekmachineProbeersel\\Zoekmachine\\Zoekmachine\\Zoekmachine.csproj",
+      "projectPath": "D:\\GitHub\\Zoekmechanisme_WPF\\Zoekmachine\\Zoekmachine.csproj",
       "packagesPath": "C:\\Users\\server\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\server\\Documents\\GitHub\\Projectwerk\\sideprojects\\ZoekmachineProbeersel\\Zoekmachine\\Zoekmachine\\obj\\",
+      "outputPath": "D:\\GitHub\\Zoekmechanisme_WPF\\Zoekmachine\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\server\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -106,7 +106,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
       }
     }
   }
