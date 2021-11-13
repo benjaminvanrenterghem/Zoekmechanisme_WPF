@@ -169,7 +169,7 @@ namespace Zoekmachine.v2 {
                 foreach (T b in dataCollectieResultaat) {
                     var res = _geefWaardeVanPropertyRecursief(zoekfilterParseResultaat.Key, zoekfilterParseResultaat.Value, b);
                     if (res is not null) {
-                        if (JsonConvert.SerializeObject((object)res) == JsonConvert.SerializeObject((object)zoekterm)) {
+                        if (JsonConvert.SerializeObject(((object)res)).ToString() == JsonConvert.SerializeObject(((object)zoekterm)).ToString()) {
                             filterDataResultaat.Add(b);
                         }
                     }
