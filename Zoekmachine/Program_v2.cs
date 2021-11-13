@@ -169,8 +169,24 @@ namespace Zoekmachine.v2 {
                 foreach (T b in dataCollectieResultaat) {
                     var res = _geefWaardeVanPropertyRecursief(zoekfilterParseResultaat.Key, zoekfilterParseResultaat.Value, b);
                     if (res is not null) {
-                        if (JsonConvert.SerializeObject(((object)res)).ToString() == JsonConvert.SerializeObject(((object)zoekterm)).ToString()) {
-                            filterDataResultaat.Add(b);
+                        var r1 = JsonConvert.SerializeObject((object)res);
+                        try {
+                            object zoekterm_conv = Convert.ChangeType(zoekterm, res.GetType());
+                            var r2 = JsonConvert.SerializeObject((object)zoekterm_conv);
+                            if (r1 == r2) {
+                                filterDataResultaat.Add(b);
+                            }
+                        } catch {
+                            var r2 = JsonConvert.SerializeObject((object)zoekterm);
+                            if (r1 == r2) {
+                                filterDataResultaat.Add(b);
+                            } else {
+                                try {
+                                    if (r1.ToString() == r2.ToString()) {
+                                        filterDataResultaat.Add(b);
+                                    }
+                                } catch { }
+                            }
                         }
                     }
 
