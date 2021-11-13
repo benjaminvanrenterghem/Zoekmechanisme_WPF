@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "PlBZyu2jX1zrGU38MYQC0yZJOOXT/Eyhsl0Ng03m4IkB/MrtcFEVPDtgWFvRPw4jSLRJYXbl6lmlpjvWfD0WIQ==",
+  "dgSpecHash": "LXGVH0oz/H490VVNZsW9hxArTmwic1MVYWy1DBj/1XPOeRTOv9DxiMqM233OviDuT517eqHM/FF8ITH3ZhKv8g==",
   "success": true,
   "projectFilePath": "D:\\GitHub\\Zoekmechanisme_WPF\\Zoekmachine\\Zoekmachine.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\server\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+    "D:\\Programs\\GlobalPackagesFolder\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
   ],
   "logs": []
 }

@@ -10,7 +10,7 @@
         "projectUniqueName": "D:\\GitHub\\Zoekmechanisme_WPF\\Zoekmachine\\Zoekmachine.csproj",
         "projectName": "Zoekmachine",
         "projectPath": "D:\\GitHub\\Zoekmechanisme_WPF\\Zoekmachine\\Zoekmachine.csproj",
-        "packagesPath": "C:\\Users\\server\\.nuget\\packages\\",
+        "packagesPath": "D:\\Programs\\GlobalPackagesFolder",
         "outputPath": "D:\\GitHub\\Zoekmechanisme_WPF\\Zoekmachine\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
@@ -60,7 +60,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.403\\RuntimeIdentifierGraph.json"
         }
       }
     }

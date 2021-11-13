@@ -145,7 +145,7 @@ namespace Zoekmachine.v2 {
                         }
                     } else {
                         return null;
-					}
+				    }
                 }
             }
 
@@ -190,9 +190,10 @@ namespace Zoekmachine.v2 {
                 if (huidigNiveau > maxNiveau) { break; }
                 List<string> nieuwPad = new();
                 nieuwPad.Add(p.Name);
+                Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
                 if (p.PropertyType.FullName != "System.String"
-                    && p.PropertyType.Assembly == Assembly.GetExecutingAssembly()
+                    && assemblies.Contains(p.PropertyType.Assembly)
                     && !p.PropertyType.IsPrimitive
                     && !p.PropertyType.FullName.StartsWith("System.")) {
 
