@@ -153,25 +153,28 @@ namespace Zoekmachine.v2 {
         }
 
         public List<T> ZoekMetFilter<T>(List<Func<List<T>>> dataCollectieActies, string zoekfilter, object zoekterm) {
-            
+
+            List<List<T>> dataCollectieResultaten = new();
             List<T> dataCollectieResultaat = new();
             List<T> filterDataResultaat = new();
 
             foreach (Func<List<T>> dataCollectieActie in dataCollectieActies) {
-                dataCollectieActie.Invoke()?.ForEach(x => dataCollectieResultaat.Add(x));
+                dataCollectieResultaat = dataCollectieActie.Invoke();
+                dataCollectieResultaten.Add(dataCollectieResultaat);
             }
 
             KeyValuePair<List<Type>, string> zoekfilterParseResultaat = _parseZoekfilter(typeof(T), zoekfilter);
 
-            
-            foreach (T b in dataCollectieResultaat) {
-                var res = _geefWaardeVanPropertyRecursief(zoekfilterParseResultaat.Key, zoekfilterParseResultaat.Value, b);
-                if (res is not null) {
-                    if (JsonConvert.SerializeObject((object)res) == JsonConvert.SerializeObject((object)zoekterm)) {
-                        filterDataResultaat.Add(b);
+            foreach (List<T> resultaat in dataCollectieResultaten) {
+                foreach (T b in dataCollectieResultaat) {
+                    var res = _geefWaardeVanPropertyRecursief(zoekfilterParseResultaat.Key, zoekfilterParseResultaat.Value, b);
+                    if (res is not null) {
+                        if (JsonConvert.SerializeObject((object)res) == JsonConvert.SerializeObject((object)zoekterm)) {
+                            filterDataResultaat.Add(b);
+                        }
                     }
-                }
 
+                }
             }
 
             return filterDataResultaat;
